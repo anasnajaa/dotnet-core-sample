@@ -1,4 +1,5 @@
-# A sample .NET Core 5 web app with simple example of API and frontend
+# Hello .NET Core
+A sample .NET Core 5 web app with simple example of API and frontend
 
 ## appsettings.json
 
