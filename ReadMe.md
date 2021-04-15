@@ -1,6 +1,9 @@
 # Hello .NET Core
 A sample .NET Core 5 web app with simple example of API and frontend
 
+# Presentation
+https://docs.google.com/presentation/d/1bzaXPHi-7njsMb52jSfOZqCrag1pt-bJzdbFMhV8mlQ/edit?usp=sharing
+
 ## appsettings.json
 
 Contains configuration data, like connection strings.  
