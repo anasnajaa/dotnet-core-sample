@@ -1,0 +1,109 @@
+@page "/demo"
+
+<h2>Users CRUD - In memory List</h2>
+<table style="width: 100%;">
+    <tr>
+        <td style="width: 50%;">
+            <h3>Get /users</h3>
+            <p>Retrives all users</p>
+            <button id="btnGetUsers">Execute</button><br />
+            <hr />
+            <h3>Get /users/{id}</h3>
+            <p>Retrives a user by ID</p>
+            <input type="text" placeholder="User ID" id="txtUserId" /><br />
+            <button id="btnGetUserById">Execute</button><br />
+            <hr />
+            <h3>Post /users</h3>
+            <p>Add a new user</p>
+            <input type="text" placeholder="User Name" id="txtAddNewUserName" /><br />
+            <button id="btnAddNewUser">Execute</button><br />
+            <hr />
+            <h3>Put /users/{id}</h3>
+            <p>Update a user</p>
+            <input type="text" placeholder="User ID" id="txtUpdateUserId" /><br />
+            <input type="text" placeholder="User Name" id="txtUpdateUserName" /><br />
+            <button id="btnUpdateUser">Execute</button><br />
+            <hr />
+            <h3>Delete /users/{id}</h3>
+            <p>Delets a user</p>
+            <input type="text" placeholder="User ID" id="txtDeleteUserId" /><br />
+            <button id="btnDeleteUser">Execute</button><br />
+        </td>
+        <td style="width: 50%;">
+            <h3>Output</h3>
+            <textarea style="width:100%;" rows="30" id="output"></textarea>
+        </td>
+    </tr>
+</table>
+
+<script>
+    const output = document.getElementById("output");
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    document.getElementById("btnGetUsers").addEventListener("click", async () => {
+        const response = await fetch("/users");
+        const body = await response.json();
+        const usersList = body.usersList;
+        let usersText = "";
+        usersList.forEach(user => {
+            usersText += `${user.id} - ${user.name}\n`;
+        });
+        output.value = usersText;
+    });
+
+    document.getElementById("btnGetUserById").addEventListener("click", async () => {
+        const txtUserId = document.getElementById("txtUserId");
+        const userId = txtUserId.value;
+        const response = await fetch(`/users/${userId}`);
+        const body = await response.json();
+        const user = body.user;
+        output.value = `${user.id} - ${user.name}`;
+    });
+
+    document.getElementById("btnAddNewUser").addEventListener("click", async () => {
+        const txtAddNewUserName = document.getElementById("txtAddNewUserName");
+        const userName = txtAddNewUserName.value;
+
+        const userData = JSON.stringify({ Name: userName });
+
+        const response = await fetch(`/users`, { method: "POST", body: userData, headers });
+        const body = await response.json();
+        const user = body.user;
+        output.value = `${user.id} - ${user.name}`;
+    });
+
+
+    document.getElementById("btnUpdateUser").addEventListener("click", async () => {
+        const txtUpdateUserId = document.getElementById("txtUpdateUserId");
+        const txtUpdateUserName = document.getElementById("txtUpdateUserName");
+
+        const userName = txtUpdateUserName.value;
+        const userId = txtUpdateUserId.value;
+
+        const userData = JSON.stringify({ Name: userName });
+
+        const response = await fetch(`/users/${userId}`, { method: "PUT", body: userData, headers });
+        const body = await response.json();
+        const user = body.user;
+
+        output.value = `${user.id} - ${user.name}\n`;
+    });
+
+    document.getElementById("btnDeleteUser").addEventListener("click", async () => {
+        const txtDeleteUserId = document.getElementById("txtDeleteUserId");
+
+        const userId = txtDeleteUserId.value;
+
+        const response = await fetch(`/users/${userId}`, { method: "DELETE", headers });
+        const body = await response.json();
+        const usersList = body.usersList;
+        let usersText = "";
+
+        usersList.forEach(user => {
+            usersText += `${user.id} - ${user.name}\n`;
+        });
+
+        output.value = usersText;
+    });
+</script>
