@@ -70,7 +70,6 @@
 
         const response = await fetch(`/users`, { method: "POST", body: userData, headers });
         const body = await response.json();
-        const usersList = body.usersList;
         const user = body.user;
         output.value = `${user.id} - ${user.name}`;
     });
