@@ -1,7 +1,9 @@
 # Hello .NET Core
+
 A sample .NET Core 5 web app with simple example of API and frontend
 
 # Presentation
+
 https://docs.google.com/presentation/d/1bzaXPHi-7njsMb52jSfOZqCrag1pt-bJzdbFMhV8mlQ/edit?usp=sharing
 
 ## appsettings.json
@@ -33,3 +35,8 @@ https://www.learnrazorpages.com/
 
 A simple route-to-code API class.  
 https://docs.microsoft.com/en-us/aspnet/core/web-api/route-to-code?view=aspnetcore-5.0
+
+## DataAccess.cs
+
+A Data provider class for SQL Server
+https://social.technet.microsoft.com/wiki/contents/articles/35974.exploring-net-core-net-core-1-0-connecting-sql-server-database.aspx

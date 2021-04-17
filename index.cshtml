@@ -70,14 +70,8 @@
 
         const response = await fetch(`/users`, { method: "POST", body: userData, headers });
         const body = await response.json();
-        const usersList = body.usersList;
-        let usersText = "";
-
-        usersList.forEach(user => {
-            usersText += `${user.id} - ${user.name}\n`;
-        });
-
-        output.value = usersText;
+        const user = body.user;
+        output.value = `${user.id} - ${user.name}`;
     });
 
 
