@@ -12,7 +12,7 @@ CREATE TABLE Users (
 	CONSTRAINT NewTable_PK PRIMARY KEY (Id)
 );
 ```
-4- Run the project `dotnet run`. 
+4- Run the project `dotnet run`.  
 5- Publish later with the command `dotnet publish`  
 
 ---
@@ -50,3 +50,9 @@ https://www.learnrazorpages.com/
 
 A simple route-to-code API class.  
 https://docs.microsoft.com/en-us/aspnet/core/web-api/route-to-code?view=aspnetcore-5.0
+
+## DataAccess.cs
+
+A Data provider class for SQL Server
+https://social.technet.microsoft.com/wiki/contents/articles/35974.exploring-net-core-net-core-1-0-connecting-sql-server-database.aspx
+
