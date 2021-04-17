@@ -46,9 +46,11 @@ public static class SampleApis
 
             var newId = usersList[usersList.Count - 1].Id + 1;
 
-            usersList.Add(new User { Name = user.Name, Id = newId });
+            var newUser = new User { Name = user.Name, Id = newId };
 
-            await context.Response.WriteAsJsonAsync(new { usersList });
+            usersList.Add(newUser);
+
+            await context.Response.WriteAsJsonAsync(new { user = newUser });
         });
 
         endpoints.MapPut("/users/{id:int}", async context =>
