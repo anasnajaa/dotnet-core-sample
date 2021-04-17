@@ -77,9 +77,8 @@ public class DataAccess
                 returnValue = cmd.ExecuteNonQuery();
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            //LogException("Failed to ExecuteNonQuery for " + procedureName, ex, parameters);
             throw;
         }
 
@@ -104,9 +103,8 @@ public class DataAccess
                 returnValue = cmd.ExecuteScalar();
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            //LogException("Failed to ExecuteScalar for " + procedureName, ex, parameters);
             throw;
         }
 
@@ -130,9 +128,8 @@ public class DataAccess
                 ds = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            //LogException("Failed to GetDataReader for " + procedureName, ex, parameters);
             throw;
         }
 
@@ -163,9 +160,8 @@ public class DataAccess
                 return result;
             }
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            //LogException("Failed to GetDataReader for " + procedureName, ex, parameters);
             throw;
         }
     }
