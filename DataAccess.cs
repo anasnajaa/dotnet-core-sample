@@ -38,7 +38,7 @@ public class DataAccess
 
     public SqlParameter GetParameterOut(string parameter, SqlDbType type, object value = null, ParameterDirection parameterDirection = ParameterDirection.InputOutput)
     {
-        SqlParameter parameterObject = new SqlParameter(parameter, type); ;
+        SqlParameter parameterObject = new SqlParameter(parameter, type);
 
         if (type == SqlDbType.NVarChar || type == SqlDbType.VarChar || type == SqlDbType.NText || type == SqlDbType.Text)
         {
