@@ -1,5 +1,4 @@
 # Hello .NET Core
-
 A sample .NET Core 5 web app with route-to-code APIs and Razore pages.
 
 # Restore steps
@@ -7,7 +6,6 @@ A sample .NET Core 5 web app with route-to-code APIs and Razore pages.
 1- Restore the packages `dotnet restore`.  
 2- Place your SQL Database connection string in `DefaultConnection` key in appsettings.json.  
 3- Run this script to create the demo table:
-
 ```
 CREATE TABLE Users (
 	Id int IDENTITY(0,1) NOT NULL,
@@ -20,7 +18,6 @@ CREATE TABLE Users (
 5- Publish later with the command `dotnet publish`
 
 ---
-
 # Presentation
 
 https://docs.google.com/presentation/d/1bzaXPHi-7njsMb52jSfOZqCrag1pt-bJzdbFMhV8mlQ/edit?usp=sharing
