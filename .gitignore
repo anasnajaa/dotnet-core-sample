@@ -340,3 +340,4 @@ ASALocalRun/
 healthchecksdb
 /wwwroot/js/res
 /wwwroot/css/res
+appsettings.Development.json

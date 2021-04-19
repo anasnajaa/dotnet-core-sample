@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 
 class User
 {
@@ -13,25 +16,42 @@ public static class SampleApis
 {
     public static void Map(IEndpointRouteBuilder endpoints)
     {
-
-        var usersList = new List<User>{
-            new User{ Id = 1, Name = "Mike" },
-            new User{ Id = 2, Name = "Alex" },
-            new User{ Id = 3, Name = "John" }
-        };
+        var dbCon = Startup.StaticConfig.GetConnectionString("DefaultConnection");
+        var db = new DataAccess(dbCon);
 
         endpoints.MapGet("/users", async context =>
         {
-            var name = context.Request.RouteValues["name"];
-            var res = new { usersList };
-            await context.Response.WriteAsJsonAsync(res);
+            var data = db.GetJson(@"
+            SELECT 
+            JSON_QUERY((
+                SELECT Id AS [id], 
+                Name AS [name] 
+                FROM Users 
+                FOR JSON PATH
+            )) AS [usersList] 
+            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER",
+            new List<DbParameter> { }, commandType: CommandType.Text);
+            await context.Response.WriteAsync(data);
         });
 
         endpoints.MapGet("/users/{id:int}", async context =>
         {
-            var id = int.Parse(context.Request.RouteValues["id"].ToString());
-            var user = usersList.Find(x => x.Id == id);
-            await context.Response.WriteAsJsonAsync(new { user });
+            var userId = int.Parse(context.Request.RouteValues["id"].ToString());
+
+            var data = db.GetJson(@"
+            SELECT 
+            JSON_QUERY((
+                SELECT Id AS [id], 
+                Name AS [name] 
+                FROM Users 
+                WHERE Id = @userid 
+                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+            )) AS [user] 
+            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER",
+            new List<DbParameter> {
+                db.GetParameter("userid", userId)
+            }, commandType: CommandType.Text);
+            await context.Response.WriteAsync(data);
         });
 
         endpoints.MapPost("/users", async context =>
@@ -44,13 +64,25 @@ public static class SampleApis
 
             var user = await context.Request.ReadFromJsonAsync<User>();
 
-            var newId = usersList[usersList.Count - 1].Id + 1;
+            var data = db.GetJson(@"
+            DECLARE @tbl TABLE (id INT);
 
-            var newUser = new User { Name = user.Name, Id = newId };
+            INSERT INTO Users (Name) OUTPUT inserted.Id INTO @tbl SELECT @username;
 
-            usersList.Add(newUser);
+            SELECT 
+            JSON_QUERY((
+                SELECT Id AS [id], 
+                Name AS [name] 
+                FROM Users 
+                WHERE Id = (SELECT TOP(1) id FROM @tbl) 
+                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+            )) AS [user] 
+            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER",
+            new List<DbParameter> {
+                db.GetParameter("username", user.Name)
+            }, commandType: CommandType.Text);
 
-            await context.Response.WriteAsJsonAsync(new { user = newUser });
+            await context.Response.WriteAsync(data);
         });
 
         endpoints.MapPut("/users/{id:int}", async context =>
@@ -64,24 +96,46 @@ public static class SampleApis
 
             var user = await context.Request.ReadFromJsonAsync<User>();
 
-            var newId = usersList[usersList.Count - 1].Id + 1;
+            var data = db.GetJson(@"
+            UPDATE Users SET Name = @username WHERE Id = @userid;
 
-            var userToUpdate = usersList.Find(x => x.Id == userId);
+            SELECT 
+            JSON_QUERY((
+                SELECT Id AS [id], 
+                Name AS [name] 
+                FROM Users 
+                WHERE Id = @userid
+                FOR JSON PATH, WITHOUT_ARRAY_WRAPPER
+            )) AS [user] 
+            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER",
+            new List<DbParameter> {
+                db.GetParameter("userid", userId),
+                db.GetParameter("username", user.Name)
+            }, commandType: CommandType.Text);
 
-            userToUpdate.Name = user.Name;
-
-            await context.Response.WriteAsJsonAsync(new { user = userToUpdate });
+            await context.Response.WriteAsync(data);
         });
 
         endpoints.MapDelete("/users/{id:int}", async context =>
         {
             var userId = int.Parse(context.Request.RouteValues["id"].ToString());
 
-            var userToDelete = usersList.Find(x => x.Id == userId);
+            var data = db.GetJson(@"
+            DELETE FROM Users WHERE Id = @userid;
 
-            usersList.Remove(userToDelete);
+            SELECT 
+            JSON_QUERY((
+                SELECT Id AS [id], 
+                Name AS [name] 
+                FROM Users 
+                FOR JSON PATH
+            )) AS [usersList] 
+            FOR JSON PATH, WITHOUT_ARRAY_WRAPPER",
+            new List<DbParameter> {
+                db.GetParameter("userid", userId)
+            }, commandType: CommandType.Text);
 
-            await context.Response.WriteAsJsonAsync(new { usersList });
+            await context.Response.WriteAsync(data);
         });
     }
 }
