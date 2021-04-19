@@ -1,10 +1,13 @@
 # Hello .NET Core
+
 A sample .NET Core 5 web app with route-to-code APIs and Razore pages.
 
 # Restore steps
+
 1- Restore the packages `dotnet restore`.  
-2- Place your SQL Database connection string in `DefaultConnection` key in appsettings.json.   
-3- Run this script to create the demo table:  
+2- Place your SQL Database connection string in `DefaultConnection` key in appsettings.json.  
+3- Run this script to create the demo table:
+
 ```
 CREATE TABLE Users (
 	Id int IDENTITY(0,1) NOT NULL,
@@ -12,18 +15,21 @@ CREATE TABLE Users (
 	CONSTRAINT NewTable_PK PRIMARY KEY (Id)
 );
 ```
+
 4- Run the project `dotnet run`.  
-5- Publish later with the command `dotnet publish`  
+5- Publish later with the command `dotnet publish`
 
 ---
+
 # Presentation
+
 https://docs.google.com/presentation/d/1bzaXPHi-7njsMb52jSfOZqCrag1pt-bJzdbFMhV8mlQ/edit?usp=sharing
 
 # Files description
 
 ## appsettings.json
 
-Contains configuration data, like connection strings.  
+Containsc production configuration data, like connection strings.  
 https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-5.0
 
 ## Program.cs
@@ -41,7 +47,7 @@ https://docs.microsoft.com/en-us/aspnet/core/fundamentals/startup?view=aspnetcor
 Project file that contain references to packages.  
 https://docs.microsoft.com/en-us/dotnet/core/project-sdk/overview
 
-## index.cshtml
+## index.cshtml/demo.cshtml
 
 A simple Razor page file.  
 https://www.learnrazorpages.com/
@@ -56,3 +62,7 @@ https://docs.microsoft.com/en-us/aspnet/core/web-api/route-to-code?view=aspnetco
 A Data provider class for SQL Server
 https://social.technet.microsoft.com/wiki/contents/articles/35974.exploring-net-core-net-core-1-0-connecting-sql-server-database.aspx
 
+## Properties/LaunchSettings.json
+
+Collection of configurations that are applied when developing the application locally
+https://dotnettutorials.net/lesson/asp-net-core-launchsettings-json-file/
