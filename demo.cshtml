@@ -1,9 +1,27 @@
 @page "/demo"
 
-<h1>Users CRUD - With SQL Data Provider</h1>
-<table style="width: 100%;">
-    <tr>
-        <td style="width: 50%;">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello dotnet - Demo</title>
+    <style>
+        .grid-layout {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+    </style>
+</head>
+
+<body>
+    <section class="grid-layout">
+        <div>
+            <h1>Users CRUD - With SQL Data Provider</h1>
+            <a href="/">Back</a><br />
             <h3>Get /users</h3>
             <p>Retrives all users</p>
             <button id="btnGetUsers">Execute</button><br />
@@ -28,13 +46,15 @@
             <p>Delets a user</p>
             <input type="text" placeholder="User ID" id="txtDeleteUserId" /><br />
             <button id="btnDeleteUser">Execute</button><br />
-        </td>
-        <td style="width: 50%;">
+        </div>
+        <div>
             <h3>Output</h3>
             <textarea style="width:100%;" rows="30" id="output"></textarea>
-        </td>
-    </tr>
-</table>
+        </div>
+    </section>
+</body>
+
+</html>
 
 <script>
     const output = document.getElementById("output");
