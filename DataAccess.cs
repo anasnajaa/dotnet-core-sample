@@ -70,9 +70,7 @@ public class DataAccess
                 DbCommand cmd = this.GetCommand(connection, procedureName, commandType);
 
                 if (parameters != null && parameters.Count > 0)
-                {
                     cmd.Parameters.AddRange(parameters.ToArray());
-                }
 
                 returnValue = cmd.ExecuteNonQuery();
             }
@@ -96,9 +94,7 @@ public class DataAccess
                 DbCommand cmd = this.GetCommand(connection, procedureName, CommandType.StoredProcedure);
 
                 if (parameters != null && parameters.Count > 0)
-                {
                     cmd.Parameters.AddRange(parameters.ToArray());
-                }
 
                 returnValue = cmd.ExecuteScalar();
             }
@@ -117,13 +113,11 @@ public class DataAccess
 
         try
         {
-            DbConnection connection = this.GetConnection();
+            using (DbConnection connection = this.GetConnection())
             {
                 DbCommand cmd = this.GetCommand(connection, procedureName, commandType);
                 if (parameters != null && parameters.Count > 0)
-                {
                     cmd.Parameters.AddRange(parameters.ToArray());
-                }
 
                 ds = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             }
@@ -140,13 +134,11 @@ public class DataAccess
     {
         try
         {
-            DbConnection connection = this.GetConnection();
+            using (DbConnection connection = this.GetConnection())
             {
                 DbCommand cmd = this.GetCommand(connection, procedureName, commandType);
                 if (parameters != null && parameters.Count > 0)
-                {
                     cmd.Parameters.AddRange(parameters.ToArray());
-                }
 
                 var reader = cmd.ExecuteReader();
 
