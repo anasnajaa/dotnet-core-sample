@@ -2,28 +2,29 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 public class Startup
 {
     public Startup(IConfiguration configuration)
     {
         Configuration = configuration;
-        StaticConfig = Configuration;
     }
 
     public IConfiguration Configuration { get; }
-    public static IConfiguration StaticConfig { get; private set; }
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddRazorPages().WithRazorPagesRoot("/"); ;
+        services.AddRazorPages().WithRazorPagesRoot("/");
     }
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.UseRouting();
         app.UseEndpoints(endpoints =>
         {
+            var logger = endpoints.ServiceProvider.GetService<ILogger<Startup>>();
+
             endpoints.MapRazorPages();
-            SampleApis.Map(endpoints);
+            SampleApis.Map(endpoints, logger, Configuration);
         });
     }
 }

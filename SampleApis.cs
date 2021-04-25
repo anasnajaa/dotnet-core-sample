@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 class User
 {
@@ -14,13 +15,13 @@ class User
 
 public static class SampleApis
 {
-    public static void Map(IEndpointRouteBuilder endpoints)
+    public static void Map(IEndpointRouteBuilder endpoints, ILogger logger, IConfiguration config)
     {
-        var dbCon = Startup.StaticConfig.GetConnectionString("DefaultConnection");
-        var db = new DataAccess(dbCon);
+        var db = new DataAccess(config.GetConnectionString("DefaultConnection"));
 
         endpoints.MapGet("/users", async context =>
         {
+            logger.Log(LogLevel.Warning, "Test Log");
             var data = db.GetJson(@"
             SELECT 
             JSON_QUERY((
